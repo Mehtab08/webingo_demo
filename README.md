@@ -15,11 +15,15 @@ This project is a Flutter-based mobile UI that replicates the design provided.
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/yourusername/tiny-home-stay-ui.git
+   git clone https://github.com/Mehtab08/webingo_demo.git
    run the application
-   A navigation screen is added for moving to the designs the were provided
+   A navigation screen is added for moving to the three designs that were provided
    we have three different screens as provided
    UI part is done to the  best of my knowledge.
+   
+   1: Screen 1 named as fitness home page
+   2: Screen 2 named as travel home page
+   3: Screen 3 named as choose seats pages
 
 
 ## Dependencies used
