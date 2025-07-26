@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:webingo_demo/screens/ChooseSeatsPage.dart';
+import 'package:webingo_demo/screens/chooseSeatsPage.dart';
 import 'package:webingo_demo/screens/fitnessHomePage.dart';
 import 'package:webingo_demo/screens/travelHomePage.dart';
 
