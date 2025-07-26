@@ -17,6 +17,9 @@ This project is a Flutter-based mobile UI that replicates the design provided.
    ```bash
    git clone https://github.com/yourusername/tiny-home-stay-ui.git
    run the application
+   A navigation screen is added for moving to the designs the were provided
+   we have three different screens as provided
+   UI part is done to the  best of my knowledge.
 
 
 ## Dependencies used
