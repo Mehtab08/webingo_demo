@@ -1,7 +1,11 @@
 import 'dart:ui';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:webingo_demo/model/stay_model.dart';
+import 'package:webingo_demo/providers/stay_provider.dart';
+import 'package:webingo_demo/services/stay_service.dart';
 
 class TravelHomePage extends StatefulWidget {
   const TravelHomePage({super.key});
@@ -11,6 +15,9 @@ class TravelHomePage extends StatefulWidget {
 }
 
 class _TravelHomePageState extends State<TravelHomePage> {
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +40,9 @@ class _TravelHomePageState extends State<TravelHomePage> {
               actionsPadding: EdgeInsets.only(right: 20),
               actions: [
                 IconButton(
-                  onPressed: (){},
+                  onPressed: () {
+
+                  },
                   icon: Icon(Icons.account_circle_outlined, color: Colors.white,
                     size: 30,
                   ),
@@ -139,107 +148,131 @@ class _TravelHomePageState extends State<TravelHomePage> {
                   const SizedBox(height: 15),
 
                   // Listing Card
-                  SizedBox(
-                    height: 350,
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.symmetric(horizontal: 25),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: stayList.length,
-                      itemBuilder: (context, index){
-                        final stay = stayList[index];
-                        return Container(
-                          width: MediaQuery.of(context).size.width*0.8,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.white,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        image: DecorationImage(
-                                          image: AssetImage(stay.image),
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      top: 10,
-                                      right: 10,
-                                      child: InkWell(
-                                        onTap: (){
-                                          setState(() {
-                                            stay.isFavorite = !stay.isFavorite;
-                                          });
-                                        },
-                                        child: CircleAvatar(
-                                          backgroundColor: Colors.grey.withOpacity(0.5),
-                                          child: Icon(
-                                              stay.isFavorite ? Icons.favorite : Icons.favorite_border, size: 25,
-                                              color: stay.isFavorite? Colors.red : Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(16),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(stay.title, style: TextStyle(fontWeight: FontWeight.w600)),
-                                        Row(
+                  Consumer(
+                    builder: (context, ref, _){
+                      final stayAsync = ref.watch(stayListProvider);
+                      return stayAsync.when(
+                        data: (stayListData){
+
+
+                          return SizedBox(
+                            height: 350,
+                            child: ListView.separated(
+                              shrinkWrap: true,
+                              padding: EdgeInsets.symmetric(horizontal: 25),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: stayListData.length,
+                              itemBuilder: (context, index){
+                                final stay = stayListData[index];
+                                return Container(
+                                  width: MediaQuery.of(context).size.width*0.8,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.white,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Stack(
                                           children: [
-                                            Icon(Icons.star_rounded, size: 25, color: Colors.black),
-                                            SizedBox(width: 4),
-                                            Text("${stay.rating} (${stay.reviewsCount})", style: TextStyle(fontWeight: FontWeight.w600)),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                image: DecorationImage(
+                                                  image: NetworkImage(stay.image),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: 10,
+                                              right: 10,
+                                              child: InkWell(
+                                                onTap: (){
+                                                  if(stay.isFavorite != true){
+                                                    StayService().favouriteStay(stay.id);
+                                                  } else {
+                                                    StayService().unFavouriteStay(stay.id);
+                                                  }
+                                                },
+                                                child: CircleAvatar(
+                                                  backgroundColor: Colors.grey.withOpacity(0.5),
+                                                  child: Icon(
+                                                    stay.isFavorite ? Icons.favorite : Icons.favorite_border, size: 25,
+                                                    color: stay.isFavorite? Colors.red : Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            )
                                           ],
                                         ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 8),
-                                    Text("${stay.guests} guests • ${stay.bedrooms} bedrooms • ${stay.beds} beds • ${stay.bathrooms} bathroom",
-                                      style: TextStyle(color: Colors.grey,
-                                          fontSize: 12
                                       ),
-                                    ),
-                                    SizedBox(height: 8),
-                                    Row(
-                                      children: [
-                                        Text("€${stay.originalPrice.toStringAsFixed(0)}",
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                            decoration: TextDecoration.lineThrough,
-                                          ),
+                                      Padding(
+                                        padding: EdgeInsets.all(16),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    stay.title, style: TextStyle(fontWeight: FontWeight.w600),
+                                                    maxLines: 1, overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Icon(Icons.star_rounded, size: 25, color: Colors.black),
+                                                    SizedBox(width: 4),
+                                                    Text("${stay.rating} (${stay.reviewsCount})", style: TextStyle(fontWeight: FontWeight.w600)),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 8),
+                                            Text("${stay.guests} guests • ${stay.bedrooms} bedrooms • ${stay.beds} beds • ${stay.bathrooms} bathroom",
+                                              style: TextStyle(color: Colors.grey,
+                                                  fontSize: 12
+                                              ),
+                                            ),
+                                            SizedBox(height: 8),
+                                            Row(
+                                              children: [
+                                                Text("€${stay.originalPrice.toStringAsFixed(0)}",
+                                                  style: TextStyle(
+                                                    color: Colors.grey,
+                                                    decoration: TextDecoration.lineThrough,
+                                                  ),
+                                                ),
+                                                Text(" €${stay.discountedPrice.toStringAsFixed(0)} night • ", style: TextStyle(fontWeight: FontWeight.w500)),
+                                                Expanded(
+                                                  child: Text("€${stay.totalPrice.toStringAsFixed(0)} total",
+                                                    style: TextStyle(color: Colors.grey),
+                                                    maxLines: 1, overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
                                         ),
-                                        Text(" €${stay.discountedPrice.toStringAsFixed(0)} night • ", style: TextStyle(fontWeight: FontWeight.w500)),
-                                        Text("€${stay.totalPrice.toStringAsFixed(0)} total",
-                                          style: TextStyle(color: Colors.grey),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return SizedBox(width: 10);
-                      },
-                    ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (BuildContext context, int index) {
+                                return SizedBox(width: 10);
+                              },
+                            ),
+                          );
+                        },
+                        // error: (err, _) => Center(child: Text(err.toString()),),
+                        error: (err, _) => Center(child: Text("Error loading data"),),
+                        loading: ()=> Center(child: CircularProgressIndicator(),),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -380,15 +413,19 @@ class NavIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isSelected = selectedIndex == index;
-    return InkWell(
-      onTap: () => onTap(index),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, color: isSelected ? Colors.white : Colors.grey),
-          SizedBox(height: 4),
-          Text(label, style: TextStyle(color: isSelected ? Colors.white : Colors.grey, fontSize: 12)),
-        ],
+    return Expanded(
+      child: InkWell(
+        onTap: () => onTap(index),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, color: isSelected ? Colors.white : Colors.grey),
+            SizedBox(height: 4),
+            Text(label, style: TextStyle(color: isSelected ? Colors.white : Colors.grey, fontSize: 12),
+              maxLines: 1, overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
       ),
     );
   }

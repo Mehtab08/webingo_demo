@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "189214825504",
+    "project_id": "webingo-bf3a9",
+    "storage_bucket": "webingo-bf3a9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:189214825504:android:2426cc9a200d65d7b63045",
+        "android_client_info": {
+          "package_name": "com.example.webingo_demo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVAqsVz3WQCcbgIwMJLWkQe54tSH7iM3o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

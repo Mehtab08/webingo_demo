@@ -28,7 +28,12 @@ This project is a Flutter-based mobile UI that replicates the design provided.
 
 ## Dependencies used
    # packages:
-    font_awesome_flutter: ^10.8.0
+      font_awesome_flutter: ^10.8.0
+      cloud_firestore: ^5.6.2
+      firebase_core: ^3.10.1
+      flutter_riverpod: ^2.6.1
+      http: ^1.4.0
+      intl: ^0.20.2
 
    # assets:
     - images/
@@ -41,6 +46,7 @@ This project is a Flutter-based mobile UI that replicates the design provided.
 ## Approach and thought process
    Tried to build the design as per my knowledge
    Amazing design and good user experience
+   Responsive UI and state management and api used also added firebase
    
 ## Time needed
    8-9 hours for making it more user interactive

@@ -1,4 +1,5 @@
 class Stay {
+  final String id;
   final String title;
   final String location;
   final String image;
@@ -14,6 +15,7 @@ class Stay {
   bool isFavorite;
 
   Stay({
+    required this.id,
     required this.title,
     required this.location,
     required this.image,
@@ -28,38 +30,42 @@ class Stay {
     required this.totalPrice,
     required this.isFavorite,
   });
+
+  factory Stay.fromJson(Map<String, dynamic> json, String id) {
+    return Stay(
+      id: id ?? '',
+      title: json['title'] ?? '',
+      location: json['location'] ?? '',
+      image: json['image'] ?? '',
+      rating: (json['rating'] ?? 0).toDouble(),
+      reviewsCount: json['reviewsCount'] ?? 0,
+      guests: json['guests'] ?? 0,
+      bedrooms: json['bedrooms'] ?? 0,
+      beds: json['beds'] ?? 0,
+      bathrooms: json['bathrooms'] ?? 0,
+      originalPrice: (json['originalPrice'] ?? 0).toDouble(),
+      discountedPrice: (json['discountedPrice'] ?? 0).toDouble(),
+      totalPrice: (json['totalPrice'] ?? 0).toDouble(),
+      isFavorite: json['isFavorite'] ?? false,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'location': location,
+      'image': image,
+      'rating': rating,
+      'reviewsCount': reviewsCount,
+      'guests': guests,
+      'bedrooms': bedrooms,
+      'beds': beds,
+      'bathrooms': bathrooms,
+      'originalPrice': originalPrice,
+      'discountedPrice': discountedPrice,
+      'totalPrice': totalPrice,
+      'isFavorite': isFavorite,
+    };
+  }
 }
-
-List<Stay> stayList = [
-  Stay(
-    title: "Tiny home in Rælingen",
-    location: "Rælingen",
-    image: "images/tiny_home.jpg",
-    rating: 4.96,
-    reviewsCount: 217,
-    guests: 4,
-    bedrooms: 2,
-    beds: 2,
-    bathrooms: 1,
-    originalPrice: 117,
-    discountedPrice: 91,
-    totalPrice: 273,
-    isFavorite: false,
-  ),
-  Stay(
-    title: "Apartment in Lillestrøm",
-    location: "Lillestrøm",
-    image: "images/Lillestrom.jpg",
-    rating: 4.95,
-    reviewsCount: 200,
-    guests: 4,
-    bedrooms: 2,
-    beds: 2,
-    bathrooms: 2,
-    originalPrice: 120,
-    discountedPrice: 99,
-    totalPrice: 280,
-    isFavorite: false,
-  ),
-];
-

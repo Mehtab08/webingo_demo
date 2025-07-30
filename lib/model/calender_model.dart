@@ -1,6 +1,6 @@
 class CalenderModel{
   String dayName;
-  int date;
+  String date;
   bool hasEvent;
 
   CalenderModel({
@@ -11,11 +11,11 @@ class CalenderModel{
 }
 
 List<CalenderModel> calenderList = [
-  CalenderModel(dayName: 'Sun', date: 22, hasEvent: false),
-  CalenderModel(dayName: 'Mon', date: 23, hasEvent: true),
-  CalenderModel(dayName: 'Tue', date: 24, hasEvent: false),
-  CalenderModel(dayName: 'Wed', date: 25, hasEvent: true),
-  CalenderModel(dayName: 'Thu', date: 26, hasEvent: false),
-  CalenderModel(dayName: 'Fri', date: 27, hasEvent: true),
-  CalenderModel(dayName: 'Sat', date: 28, hasEvent: true),
+  CalenderModel(dayName: 'Sun', date: "2025-11-22", hasEvent: false),
+  CalenderModel(dayName: 'Mon', date: "2025-11-23", hasEvent: true),
+  CalenderModel(dayName: 'Tue', date: "2025-11-24", hasEvent: false),
+  CalenderModel(dayName: 'Wed', date: "2025-11-25", hasEvent: true),
+  CalenderModel(dayName: 'Thu', date: "2025-11-26", hasEvent: false),
+  CalenderModel(dayName: 'Fri', date: "2025-11-27", hasEvent: true),
+  CalenderModel(dayName: 'Sat', date: "2025-11-28", hasEvent: true),
 ];
